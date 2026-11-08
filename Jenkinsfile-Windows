@@ -1,7 +1,9 @@
+$content = @'
 pipeline {
     agent any
 
     environment {
+        PYTHON = 'C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe'
         VENV_DIR = "venv"
         HOST = "0.0.0.0"
         PORT = "5000"
@@ -21,7 +23,7 @@ pipeline {
         stage('Setup Virtual Environment') {
             steps {
                 bat """
-                python -m venv ${VENV_DIR}
+                "${PYTHON}" -m venv ${VENV_DIR}
                 call ${VENV_DIR}\\Scripts\\activate
                 python --version
                 python -m pip install --upgrade pip
@@ -52,3 +54,5 @@ pipeline {
         }
     }
 }
+'@
+[System.IO.File]::WriteAllText("$PWD\Jenkinsfile-Windows", $content)
