@@ -36,12 +36,24 @@ pipeline {
         }
 
         stage('Run Tests') {
-            steps {
-                bat """
-                call ${VENV_DIR}\\Scripts\\activate
-                pip install pytest-cov
-                python -m pytest test_app.py -v --cov=app --cov-report=term
-                """
+            parallel {
+                stage('Test File 1') {
+                    steps {
+                        bat """
+                        call ${VENV_DIR}\\Scripts\\activate
+                        pip install pytest-cov
+                        python -m pytest test_app.py -v --cov=app --cov-report=term
+                        """
+                    }
+                }
+                stage('Test File 2') {
+                    steps {
+                        bat """
+                        call ${VENV_DIR}\\Scripts\\activate
+                        python -m pytest test_app_2.py -v
+                        """
+                    }
+                }
             }
         }
 
