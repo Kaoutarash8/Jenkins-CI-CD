@@ -40,3 +40,17 @@ pipeline {
                 """
             }
         }
+
+        stage('Deploy') {
+            steps {
+                withEnv(['JENKINS_NODE_COOKIE=dontKillMe', 'BUILD_ID=dontKillMe']) {
+                    bat """
+                    call ${VENV_DIR}\\Scripts\\activate
+                    pip install waitress
+                    start /B cmd /c "waitress-serve --host=${HOST} --port=${PORT} ${APP_MODULE} > gunicorn.log 2>&1"
+                    """
+                }
+            }
+        }
+    }
+}
