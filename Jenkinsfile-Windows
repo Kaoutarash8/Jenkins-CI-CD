@@ -40,16 +40,3 @@ pipeline {
                 """
             }
         }
-
-        stage('Deploy') {
-            steps {
-                bat """
-                call ${VENV_DIR}\\Scripts\\activate
-                pip install waitress
-                set BUILD_ID=dontKillMe
-                start /B cmd /c "waitress-serve --host=${HOST} --port=${PORT} ${APP_MODULE} > gunicorn.log 2>&1"
-                """
-            }
-        }
-    }
-}
