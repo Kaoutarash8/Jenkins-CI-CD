@@ -1,4 +1,3 @@
-$content = @'
 pipeline {
     agent any
 
@@ -54,5 +53,3 @@ pipeline {
         }
     }
 }
-'@
-[System.IO.File]::WriteAllText("$PWD\Jenkinsfile-Windows", $content)
