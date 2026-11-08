@@ -1,8 +1,10 @@
 pipeline {
     agent any
+
     triggers {
-           cron('H/5 * * * *')
-   }
+        cron('H/5 * * * *')
+        githubPush()
+    }
 
     environment {
         PYTHON = 'C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe'
@@ -28,9 +30,7 @@ pipeline {
                 "${PYTHON}" -m venv ${VENV_DIR}
                 call ${VENV_DIR}\\Scripts\\activate
                 python --version
-                python -m pip install --upgrade pip
                 pip install -r requirements.txt
-                pip install pytest pytest-cov
                 """
             }
         }
@@ -39,6 +39,7 @@ pipeline {
             steps {
                 bat """
                 call ${VENV_DIR}\\Scripts\\activate
+                pip install pytest-cov
                 python -m pytest test_app.py -v --cov=app --cov-report=term
                 """
             }
